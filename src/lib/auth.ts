@@ -1,5 +1,8 @@
+import { User, login } from "@/server/login";
+
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -11,26 +14,18 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        // const res = await fetch("/your/endpoint", {
-        //   method: "POST",
-        //   body: JSON.stringify(credentials),
-        //   headers: { "Content-Type": "application/json" },
-        // });
-        // const user = await res.json();
-
-        const user = null;
-        // If no error and we have user data, return it
-        if (user) {
+        const user: any = await login(credentials?.email as string);
+        const passwordMatch = await bcrypt.compare(
+          credentials?.password as string,
+          user?.password as string
+        );
+        console.log("🚀 ~ authorize ~ passwordMatch:", passwordMatch);
+        console.log("🚀 ~ authorize ~ user:", user);
+        if (passwordMatch) {
           return user;
         }
         // Return null if user data could not be retrieved

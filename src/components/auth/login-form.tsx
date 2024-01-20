@@ -19,7 +19,7 @@ import { FormSuccess } from "@/components/form-success";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { LoginSchema } from "@/schemas";
-//import { login } from "@/actions/login";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,22 +38,23 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    console.log("🚀 ~ onSubmit ~ values:", values);
     setError("");
     setSuccess("");
-    // startTransition(() => {
-    //   login(values, callbackUrl)
-    //     .then((data) => {
-    //       if (data?.error) {
-    //         form.reset();
-    //         setError(data.error);
-    //       }
-    //       if (data?.success) {
-    //         form.reset();
-    //         setSuccess(data.success);
-    //       }
-    //     })
-    //     .catch(() => setError("Something went wrong"));
-    // });
+    startTransition(() => {
+      signIn("credentials", { ...values, redirect: false })
+        .then((data: any) => {
+          if (data?.error) {
+            form.reset();
+            setError(data.error);
+          }
+          if (data?.success) {
+            form.reset();
+            setSuccess(data.success);
+          }
+        })
+        .catch(() => setError("Something went wrong"));
+    });
   };
 
   return (

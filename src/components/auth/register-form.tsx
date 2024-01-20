@@ -18,10 +18,9 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "@/schemas";
+import { register } from "@/server/register";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-// import { register } from "@/actions/register";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -40,14 +39,12 @@ export const RegisterForm = () => {
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
-
-    // startTransition(() => {
-    //   register(values)
-    //     .then((data) => {
-    //       setError(data.error);
-    //       setSuccess(data.success);
-    //     });
-    // });
+    startTransition(() => {
+      register(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
   };
 
   return (

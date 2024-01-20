@@ -1,10 +1,16 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
-  const session = true;
+  const { NEXTAUTH_SECRET } = process.env;
+  const session = await getToken({
+    req: request,
+    secret: NEXTAUTH_SECRET,
+  });
+  console.log("🚀 ~ middleware ~ session:", session);
   console.log("🚀 ~ middleware ~ pathName:", pathName);
   if (pathName.startsWith("/dashboard")) {
     if (session) {
