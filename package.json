@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "drizzle-kit generate:pg",
+    "push": "drizzle-kit push:pg",
+    "pull": "drizzle-kit introspect:pg"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -27,10 +30,13 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.2.0",
+    "dotenv": "^16.3.2",
+    "drizzle-orm": "^0.29.3",
     "lucide-react": "^0.311.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "pnpm": "^8.14.1",
+    "postgres": "^3.4.3",
     "react": "^18",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
@@ -39,6 +45,7 @@
     "recharts": "^2.10.4",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "vercel": "^33.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -47,6 +54,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "drizzle-kit": "^0.20.13",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8",
